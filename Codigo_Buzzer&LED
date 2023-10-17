@@ -1,0 +1,68 @@
+int LED = 13;               // Assign LED pin
+int Buzzer = 8;
+
+void setup() {
+  pinMode(LED, OUTPUT);      // Configure LED pin as output.
+  pinMode(Buzzer, OUTPUT);   // Configure Buzzer pin as output.
+  Serial.begin(9600);        // Start the Serial Port.
+  digitalWrite(LED, LOW);    // Turn off the onboard LED.
+  digitalWrite(Buzzer, LOW); // Turn off the Buzzer.
+}
+
+void loop() { 
+  if (Serial.available()) {    // Check for communication
+    char dado_recebido = Serial.read(); // Read data received from BT
+    Serial.println(dado_recebido);      // Transmit data to the Terminal
+
+    if (dado_recebido == 'U') {
+      pisca_led(2);
+    }
+    else if (dado_recebido == 'R') {
+      pisca_led(3);
+    }
+    else if (dado_recebido == 'D') {
+      pisca_led(4);
+    }
+    else if (dado_recebido == 'L') {
+      pisca_led(5);     
+    }
+    else if (dado_recebido == 'T') {
+      toca_buzzer(3);
+    }
+    else if (dado_recebido == 'G') {
+      toca_buzzer_pisca_LED(3);
+    }
+    else {
+      digitalWrite(LED, LOW);
+      digitalWrite(Buzzer, LOW);
+    }  
+  }    
+}
+
+void pisca_led(int pisca) {
+  for (int i = 1; i <= pisca; i++) {
+    digitalWrite(LED, HIGH);
+    delay(300);
+    digitalWrite(LED, LOW);
+    delay(300);
+  }
+}
+
+void toca_buzzer(int toca) {
+  for (int i = 1; i <= toca; i++) {
+    digitalWrite(Buzzer, HIGH);
+    delay(300);
+    digitalWrite(Buzzer, LOW);
+    delay(300);
+  }
+}
+void toca_buzzer_pisca_LED(int toca) {
+  for (int i = 1; i <= toca; i++) {
+    digitalWrite(Buzzer, HIGH);
+    digitalWrite(LED, HIGH);
+    delay(300);
+    digitalWrite(Buzzer, LOW);
+    digitalWrite(LED, LOW);
+    delay(300);
+  }
+}
